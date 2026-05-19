@@ -8,6 +8,10 @@ function Table() {
 
   const [winner, setWinner] = useState("");
 
+  const [count, setCount] = useState(0);
+
+ 
+
   function showImage(index: number) {
     if (board[index] !== null) return;
 
@@ -16,6 +20,7 @@ function Table() {
     setBoard(newBoard);
     setIsCross(!isCross);
     checkWinner(newBoard);
+    setCount((prev) => prev + 1);
   }
 
   function checkWinner(board: (string | null)[]) {
@@ -32,7 +37,7 @@ function Table() {
 
     for (const [a, b, c] of lines) {
       if (board[a] && board[a] === board[b] && board[b] == board[c]) {
-        setWinner(board[a] === "X" ? "Cross" : "Circle" );
+        setWinner(board[a] === "X" ? "Cross" : "Circle");
       }
     }
   }
@@ -40,11 +45,13 @@ function Table() {
     setBoard(Array(9).fill(null));
     setIsCross(true);
     setWinner("");
+    setCount(0);
   }
 
   return (
     <div className="text-white flex flex-col gap-10 justify-center items-center mt-10">
-      <h2>{winner || "draw"}</h2>
+      <h2>{winner}</h2>
+      <div>{!winner && count === 9 && <h3>Match is Draw</h3>}</div>
       <div
         className="flex flex-col justify-center items-center cursor-pointer hover:text-red-600 "
         onClick={resetGame}
